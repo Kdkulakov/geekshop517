@@ -47,7 +47,7 @@ class UserRegisterForm(UserCreationForm):
         return user
 
 
-class UserProfileForm(UserChangeForm):
+class UserEditForm(UserChangeForm):
     avatar = forms.ImageField(widget=forms.FileInput(), required=False)
 
     class Meta:
@@ -55,7 +55,7 @@ class UserProfileForm(UserChangeForm):
         fields = ('first_name', 'last_name', 'avatar', 'username', 'email')
 
     def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)
+        super(UserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control py-4'
         self.fields['username'].widget.attrs['readonly'] = True

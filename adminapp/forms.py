@@ -1,6 +1,6 @@
 from django import forms
 
-from authapp.forms import UserRegisterForm, UserProfileForm
+from authapp.forms import UserRegisterForm, UserEditForm
 from authapp.models import User
 
 
@@ -16,7 +16,7 @@ class UserAdminRegistrationForm(UserRegisterForm):
         self.fields['avatar'].widget.attrs['class'] = 'custom-file-input'
 
 
-class UserAdminProfileForm(UserProfileForm):
+class UserAdminProfileForm(UserEditForm):
 
     def __init__(self, *args, **kwargs):
         super(UserAdminProfileForm, self).__init__(*args, **kwargs)
