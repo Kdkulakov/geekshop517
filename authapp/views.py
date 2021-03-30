@@ -11,7 +11,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from authapp.forms import UserLoginForm, UserRegisterForm, UserEditForm
 from basketapp.models import Basket
 from django.views.generic import FormView, UpdateView
 
@@ -41,24 +41,25 @@ class GeekLoginView(FormView):
     success_url = reverse_lazy('index')
     form_class = UserLoginForm
     template_name = 'authapp/login.html'
+    title = 'Login'
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(data=request.POST)
-
-        if form.is_valid():
-            usr = form.cleaned_data.get('username')
-            pwd = form.cleaned_data.get('password')
-
-            user = authenticate(
-                username=usr,
-                password=pwd
-            )
-
-            if user and user.is_active:
-                login(request, user)
-                return redirect(self.success_url)
-
-        return render(request, self.template_name, {'form': form})
+    # def post(self, request, *args, **kwargs):
+    #     form = self.form_class(data=request.POST)
+    #
+    #     if form.is_valid():
+    #         usr = form.cleaned_data.get('username')
+    #         pwd = form.cleaned_data.get('password')
+    #
+    #         user = authenticate(
+    #             username=usr,
+    #             password=pwd
+    #         )
+    #
+    #         if user and user.is_active:
+    #             login(request, user)
+    #             return redirect(self.success_url)
+    #
+    #     return render(request, self.template_name, {'form': form})
 
 
 
@@ -83,7 +84,7 @@ class RegisterView(FormView):
     model = User
     form_class = UserRegisterForm
     template_name = 'authapp/register.html'
-    success_url = reverse_lazy('mainapp:index')
+    success_url = reverse_lazy('auth:login')
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(data=request.POST)
@@ -91,7 +92,7 @@ class RegisterView(FormView):
         if form.is_valid():
             user = form.save()
             if self.send_verify_mail(user):
-                messages.success(request, 'Вы успешно зарегистрировались!')
+                messages.success(request, 'Вы успешно зарегистрировались! Проверьте почту. Активируйте учетную запись.')
                 return redirect(self.success_url)
 
             return redirect(self.success_url)
@@ -128,12 +129,12 @@ class RegisterView(FormView):
 def profile(request):
     user = request.user
     if request.method == 'POST':
-        form = UserProfileForm(data=request.POST, files=request.FILES, instance=user)
+        form = UserEditForm(data=request.POST, files=request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('auth:profile'))
     else:
-        form = UserProfileForm(instance=user)
+        form = UserEditForm(instance=user)
     context = {
         'form': form,
         'baskets': Basket.objects.filter(user=user),
@@ -159,7 +160,7 @@ def profile(request):
 
 class ProfileView(UpdateView):
     model = User
-    form_class = UserProfileForm
+    form_class = UserEditForm
     template_name = 'authapp/profile.html'
     success_url = reverse_lazy('auth:profile')
 

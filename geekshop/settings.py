@@ -24,7 +24,7 @@ SECRET_KEY = '1h^vs@7ozr6yo$$c%rm8145=$t4pc4j&r5=w$u*zor^z=s&fka'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', '127.0.0.1:8000']
 
 # Application definition
 
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
 
     'mainapp',
     'authapp',
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'geekshop.urls'
@@ -66,6 +68,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mainapp.context_processors.basket',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -130,18 +134,13 @@ AUTH_USER_MODEL = 'authapp.User'
 LOGIN_URL = '/auth/login/'
 
 
-DOMAIN_NAME = 'http://localhost:8000'
+DOMAIN_NAME = 'http://127.0.0.1:8000'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'localhost'
+EMAIL_HOST = '127.0.0.1'
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
 EMAIL_USE_SSL = False
 
-# EMAIL_HOST = 'smtp.mailtrap.io'
-# EMAIL_HOST_USER = 'ce33d9d9b679a3'
-# EMAIL_HOST_PASSWORD = '4472ef6c7895d9'
-# EMAIL_PORT = '2525'
-# python -m smtpd -n -c DebuggingServer localhost:25
 EMAIL_FILE_PATH = 'tmp/email-messages/'
