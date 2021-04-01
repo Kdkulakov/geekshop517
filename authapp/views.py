@@ -1,36 +1,40 @@
-import hashlib
-import random
-
 from django.conf import settings
-from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
-from django.http import Http404
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
-from django.contrib import auth
 from django.urls import reverse, reverse_lazy
+
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.contrib import auth
+from django.contrib.auth.views import LogoutView
 
 from authapp.forms import UserLoginForm, UserRegisterForm, UserEditForm
-from basketapp.models import Basket
-from django.views.generic import FormView, UpdateView
+from authapp.forms import UserProfileEditForm
 
+from basketapp.models import Basket
 from .models import User
 from .models import UserProfile
 from django.db import transaction
-from authapp.forms import UserProfileEditForm
-from django.contrib.auth.views import LogoutView
+
+from django.views.generic import FormView, UpdateView
 
 
-class Login(FormView):
+class Login(LoginView):
+    """
+    CBV контролер для страницы входа на сайт
+    """
     model = User
-    success_url = reverse_lazy('index')
+    success_url = '/'
     form_class = UserLoginForm
     template_name = 'authapp/login.html'
     title = 'Login'
 
 
 class RegisterView(FormView):
+    """
+    CBV Контроллер для страницы регистрации пользователя
+    """
     model = User
     form_class = UserRegisterForm
     template_name = 'authapp/register.html'
@@ -79,7 +83,7 @@ class Logout(LogoutView):
     template_name = "authapp/login.html"
 
 
-class ProfileEdit(UpdateView):
+class ProfileEdit(LoginRequiredMixin, UpdateView):
     model = UserProfile
     form_class = UserEditForm
     form_class_second = UserProfileEditForm
@@ -95,7 +99,7 @@ class ProfileEdit(UpdateView):
         self_pk = self.object.pk
         user = User.objects.get(pk=self_pk)
         context['profile_form'] = self.form_class_second(instance=user.userprofile)
-
+        context['baskets'] = Basket.objects.filter(user=user)
         return context
 
 
