@@ -17,7 +17,7 @@
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="admin.html">GeekShop</a>
+    <a class="navbar-brand" href="{% url 'index' %}">GeekShop</a>
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i>
     </button>
     <!-- Navbar Search-->
@@ -36,47 +36,18 @@
             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="login.html">Logout</a>
+                <a class="dropdown-item" href="{% url 'auth:logout' %}">Logout</a>
             </div>
         </li>
     </ul>
 </nav>
 <div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
-                <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Приложения</div>
-                    <a class="nav-link" href="{% url 'admin_staff:admin_users' %}">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        Пользователи
-                    </a>
-                    <a class="nav-link" href="index.html">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-shopping-basket"></i>
-                        </div>
-                        Категории
-                    </a>
-                    <a class="nav-link" href="index.html">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-tshirt"></i>
-                        </div>
-                        Продукты
-                    </a>
-                </div>
-            </div>
-            <div class="sb-sidenav-footer"></div>
-        </nav>
-    </div>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid">
-                <h1 class="mt-4">Административная панель</h1>
 
-            </div>
-        </main>
+    {% include 'adminapp/includes/admin-sidebar.html' %}
+
+    <div id="layoutSidenav_content">
+        {% block content %}
+        {% endblock %}
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid">
                 <div class="d-flex align-items-center justify-content-between small">
