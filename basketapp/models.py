@@ -23,3 +23,8 @@ class Basket(models.Model):
     def total_sum(self):
         baskets = Basket.objects.filter(user=self.user)
         return sum(basket.sum() for basket in baskets)
+
+    def delete(self):
+       self.product.quantity += self.quantity
+       self.product.save()
+       super(self.__class__, self).delete()
