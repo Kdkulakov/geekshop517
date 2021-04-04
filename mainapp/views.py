@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.views.generic import ListView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from mainapp.models import Product, ProductCategory
 
 
@@ -29,5 +29,25 @@ class ProductList(ListView):
     """
     model = Product
     template_name = 'mainapp/products.html'
+    context_object_name = 'products'
+    paginate_by = "3"
+
+
+class ProductCategoryList(ListView):
+    """
+    Контроллер вывода списка категорий
+    """
+    model = ProductCategory
+    template_name = 'mainapp/category_list.html'
+    context_object_name = 'categories'
+    paginate_by = "3"
+
+
+class ProductAdminList(LoginRequiredMixin, ListView):
+    """
+    Контроллер вывода списка товаров для админки
+    """
+    model = Product
+    template_name = 'mainapp/products_list_admin.html'
     context_object_name = 'products'
     paginate_by = "3"
