@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from authapp.models import User
 from adminapp.forms import UserAdminRegistrationForm, UserAdminProfileForm
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # FBV = Function-Based-View
 # CBV = Class-Based-View
@@ -19,7 +19,7 @@ def index(request):
 
 
 # READ
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
     template_name = 'adminapp/admin-users-read.html'
 

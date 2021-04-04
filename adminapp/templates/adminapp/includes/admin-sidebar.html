@@ -3,23 +3,31 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Приложения</div>
-                    <a class="nav-link" href="{% url 'admin_staff:admin_users' %}">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        Пользователи
-                    </a>
-                    <a class="nav-link" href="index.html">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-shopping-basket"></i>
-                        </div>
-                        Категории
-                    </a>
-                    <a class="nav-link" href="index.html">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-tshirt"></i>
-                        </div>
-                        Продукты
+                    {% if user.is_superuser %}
+                        <a class="nav-link" href="{% url 'admin_staff:admin_users' %}">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            Пользователи
+                        </a>
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            Категории
+                        </a>
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            Продукты
+                        </a>
+                    {% endif %}
+                    <a class="nav-link" href="{% url 'ordersapp:orders_list' %}">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            Список заказов
                     </a>
                 </div>
             </div>
