@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from mainapp.models import Product
 from basketapp.models import Basket
+from ordersapp.models import OrderItem
 
 
 @login_required
@@ -16,6 +17,7 @@ def basket_add(request, product_id=None):
         basket = Basket(user=request.user, product=product)
         basket.quantity = 1
         basket.save()
+
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         basket = baskets.first()
