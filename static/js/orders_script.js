@@ -72,9 +72,4 @@ window.onload = function () {
        removed: deleteOrderItem
     });
 
-    $('.order_form select').change(function () {
-       var target = event.target;
-       console.log(target);
-    });
-
 };
