@@ -1,6 +1,5 @@
 .idea
 __pycache__/
 db.sqlite3
-media
 !/geekshop/.env
 !/geekshop/vk.json
