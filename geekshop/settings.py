@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import json
-import environ
-
-env = environ.Env()
-environ.Env.read_env()
+# import environ
+#
+# env = environ.Env()
+# environ.Env.read_env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'basketapp',
     'adminapp',
     'ordersapp',
+
+    'debug_toolbar',
+    'template_profiler_panel',
+
 ]
 
 MIDDLEWARE = [
@@ -57,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'geekshop.urls'
@@ -85,17 +90,17 @@ WSGI_APPLICATION = 'geekshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # выносим настройки использования движка базы данных в env
-DATABASES = {
-    'default': env.db('DATABASE_URL'),  # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-}
+# DATABASES = {
+#     'default': env.db('DATABASE_URL'),  # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+# }
 
 # DATABASES = {
 #     'default': {
@@ -196,3 +201,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+
+
