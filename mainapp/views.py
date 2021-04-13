@@ -23,6 +23,19 @@ def products(request, category_id=None, page=1):
     return render(request, 'mainapp/products.html', context)
 
 
+def main(request):
+   title = 'главная'
+
+   # products = Product.objects.filter(is_active=True, category__is_active=True).select_related('category')[:3]
+   products = Product.objects.filter(is_active=True, category__is_active=True)[:3]
+
+   content = {
+       'title': title,
+       'products': products,
+   }
+
+   return render(request, 'mainapp/index.html', content)
+
 class ProductList(ListView):
     """
     Контроллер вывода списка товаров
