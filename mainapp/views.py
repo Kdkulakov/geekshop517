@@ -31,7 +31,7 @@ def get_category(pk):
         return get_object_or_404(ProductCategory, pk=pk)
 
 
-def get_products():
+def get_products(request):
     if settings.LOW_CACHE:
         key = 'products'
         products = cache.get(key)
