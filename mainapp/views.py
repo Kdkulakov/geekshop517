@@ -1,10 +1,13 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.template.loader import render_to_string
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from mainapp.models import Product, ProductCategory
 from django.conf import settings
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 
 def get_links_menu():
@@ -84,7 +87,7 @@ def index(request):
     context = {'title': 'GeekShop'}
     return render(request, 'mainapp/index.html', context)
 
-
+@cache_page(3600)
 def products(request, category_id=None, page=1):
     context = {'title': 'GeekShop - Каталог', 'categories': ProductCategory.objects.all()}
     if category_id:
@@ -125,3 +128,40 @@ class ProductAdminList(LoginRequiredMixin, ListView):
     template_name = 'mainapp/products_list_admin.html'
     context_object_name = 'products'
     paginate_by = "3"
+
+
+def products_ajax(request, pk=None, page=1):
+    if request.is_ajax():
+        links_menu = get_links_menu()
+
+        if pk:
+            if pk == '0':
+                category = {
+                   'pk': 0,
+                   'name': 'все'
+                }
+                products = get_products_ordered_by_price()
+            else:
+                category = get_category(pk)
+                products = get_products_in_category_ordered_by_price(pk)
+
+            paginator = Paginator(products, 2)
+            try:
+                products_paginator = paginator.page(page)
+            except PageNotAnInteger:
+                products_paginator = paginator.page(1)
+            except EmptyPage:
+                products_paginator = paginator.page(paginator.num_pages)
+
+            content = {
+               'links_menu': links_menu,
+               'category': category,
+               'products': products_paginator,
+            }
+
+            result = render_to_string(
+                        'mainapp/includes/inc_products_list_content.html',
+                        context=content,
+                        request=request)
+
+            return JsonResponse({'result': result})
