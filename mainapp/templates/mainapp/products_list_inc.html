@@ -1,0 +1,35 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static 'css/products.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+                <h1>{{category.name}}</h1>
+                {% for cat in menu_links %}
+                    {{ cat.name }}<br />
+                {% endfor %}
+
+                {% for prod in products %}
+                <p>{{prod.name}}</p>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2020</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+{% endblock %}
