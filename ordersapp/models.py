@@ -4,7 +4,6 @@ from django.db import models
 from mainapp.models import Product
 
 
-
 class OrderItemQuerySet(models.QuerySet):
 
    def delete(self, *args, **kwargs):

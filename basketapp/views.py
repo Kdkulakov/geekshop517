@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 from mainapp.models import Product
 from basketapp.models import Basket
-from ordersapp.models import OrderItem
 
 
 @login_required
